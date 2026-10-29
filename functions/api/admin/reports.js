@@ -1,0 +1,3 @@
+import { json } from '../../_lib/http.js';
+import { requireAdmin } from '../../_lib/admin.js';
+export async function onRequestGet({request,env}){const admin=await requireAdmin(request,env,['admin','reviewer']);if(!admin)return json({error:'No autorizado.'},401);const rows=await env.DB.prepare('SELECT id,category,description,province,canton,occurred_on,private_location,contact_email,status,public_consent,location_public,public_summary,latitude,longitude,location_verified,created_at,reviewed_at,referral_reference FROM reports ORDER BY created_at DESC LIMIT 200').all();return json({items:rows.results});}

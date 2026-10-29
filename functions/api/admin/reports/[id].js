@@ -1,0 +1,4 @@
+import { json, sameOrigin } from '../../../_lib/http.js';
+import { requireAdmin } from '../../../_lib/admin.js';
+export { updateReport as onRequestPatch } from '../../../_lib/report-review.js';
+export async function onRequestDelete({request,env,params}){if(!sameOrigin(request))return json({error:'Origen no permitido.'},403);const admin=await requireAdmin(request,env,['admin']);if(!admin)return json({error:'Solo administración puede borrar.'},403);const row=await env.DB.prepare('SELECT id FROM reports WHERE id=?').bind(params.id).first();if(!row)return json({error:'Reporte no encontrado.'},404);await env.DB.prepare('INSERT INTO admin_audit(id,admin_id,action,entity_type,entity_id) VALUES(?,?,?,?,?)').bind(crypto.randomUUID(),admin.id,'report_deleted','report',params.id).run();await env.DB.prepare('DELETE FROM reports WHERE id=?').bind(params.id).run();return json({ok:true});}
