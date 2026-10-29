@@ -5,5 +5,5 @@ pages_build_output_dir = "./public"
 [[d1_databases]]
 binding = "DB"
 database_name = "ecoredec-db"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "45f6cdcc-5ae1-46c5-af8f-d36b610313f7"
 migrations_dir = "migrations"
